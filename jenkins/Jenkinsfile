@@ -1,7 +1,7 @@
 pipeline {
     environment {
-    registry = "eureka-project"
-    application = "eureka-project"
+    registry = "eureka-server"
+    application = "eureka-server"
 //    registryCredential = 'dockerhub'
     dockerImage = ''
     }
@@ -18,17 +18,24 @@ pipeline {
             steps {
                 sh 'mvn test'
             }
-            post {
+    /*        post {
                 always {
                     junit 'target/surefire-reports/*.xml'
                 }
-            }
+            } */
         }
+
+    stage('SonarQube analysis') {
+        def scannerHome = /usr/share/sonar-scanner-4.1.0.1829;
+        withSonarQubeEnv('cicd-scanner') { // If you have configured more than one global server connection, you can specify its name
+           sh "${scannerHome}/bin/sonar-scanner"
+        }
+    }
         
         stage('Build image') {
             steps{
                 script {
-                    dockerImage = docker.build registry + ":$BUILD_NUMBER"
+                    dockerImage = docker.build(registry+":$BUILD_NUMBER",./eureka-server/Dockerfile)
                 }
             }
         }
