@@ -26,9 +26,10 @@ pipeline {
         }
 
     stage('SonarQube analysis') {
-        def scannerHome = /usr/share/sonar-scanner-4.1.0.1829;
+       // def scannerHome = /usr/share/sonar-scanner-4.1.0.1829;
         withSonarQubeEnv('cicd-scanner') { // If you have configured more than one global server connection, you can specify its name
-           sh "${scannerHome}/bin/sonar-scanner"
+          // sh "${scannerHome}/bin/sonar-scanner"
+            sh "$SONAR_RUNNER_HOME/bin/sonar-scanner"
         }
     }
         
