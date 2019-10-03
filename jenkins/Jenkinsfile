@@ -53,14 +53,15 @@ pipeline {
 
         }
         stage('Build image') {
-	 script {
+	 
             steps{
-                docker.withRegistry('http://'+registry, 'credentials-id') {
-                    def dockerImage = docker.build(registry+"/"+application+":$BUILD_NUMBER","./eureka-server/")
-			dockerImage.push()
-                } //docker
-            } //steps
-	 } // script
+		    script {
+                	docker.withRegistry('http://'+registry, 'credentials-id') {
+                    		def dockerImage = docker.build(registry+"/"+application+":$BUILD_NUMBER","./eureka-server/")
+				dockerImage.push()
+                	} //docker
+            	} //script
+	 } // steps
         } // stage
 
         
