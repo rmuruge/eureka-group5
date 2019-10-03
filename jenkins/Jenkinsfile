@@ -45,13 +45,13 @@ pipeline {
         }
     }
         
-	stage("Fix the permission issue") {
+	/** stage("Fix the permission issue") {
 
             steps {
                 sh "sudo chmod 666 /var/run/docker.sock"
             }
 
-        }
+        } */
         stage('Build image') {
 	 
             steps{
