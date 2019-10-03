@@ -12,9 +12,10 @@ pipeline {
     stages {
        stage('CheckOut Project from GitHub') {
           steps {
-                git branch: 'master'
-		credentialsId: 'GitHub'
+                git branch: 'master',
+		credentialsId: 'GitHub',
 		url: 'git@github.com:rmuruge/eureka-group5.git'
+		  
 		sh 'ls -lrt' 
           }
        }
