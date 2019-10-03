@@ -56,7 +56,7 @@ pipeline {
 	 
             steps{
 		    script {
-                	docker.withRegistry('http://'+registry, 'credentials-id') {
+                	docker.withRegistry('http://'+registry, 'nexus-credential') {
                     		def dockerImage = docker.build(registry+"/"+application+":$BUILD_NUMBER","./eureka-server/")
 				dockerImage.push()
                 	} //docker
