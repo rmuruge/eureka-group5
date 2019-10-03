@@ -7,8 +7,17 @@ pipeline {
     }
     
     agent any
-    
+   
+   } 
     stages {
+       stage('CheckOut Project from GitHub') {
+          steps {
+                git branch: 'master'
+		credentialsId: 'GitHub'
+		url: 'git@github.com:rmuruge/eureka-group5.git'
+		sh 'ls -lrt' 
+          }
+       }
         stage('Build') {
             steps {
                 sh 'mvn -B -DskipTests clean package'
@@ -18,11 +27,11 @@ pipeline {
             steps {
                 sh 'mvn test'
             }
-    /*        post {
+            post {
                 always {
                     junit 'target/surefire-reports/*.xml'
                 }
-            } */
+            } 
         }
 
     stage('SonarQube analysis') {
