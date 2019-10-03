@@ -1,6 +1,6 @@
 pipeline {
     environment {
-    registry = "eureka-server"
+    registry = "104.197.202.18:18082"
     application = "eureka-server"
 //    registryCredential = 'dockerhub'
     dockerImage = ''
@@ -45,10 +45,18 @@ pipeline {
         }
     }
         
+	stage("Fix the permission issue") {
+
+            steps {
+                sh "sudo chmod 666 /var/run/docker.sock"
+            }
+
+        }
         stage('Build image') {
             steps{
-                script {
-                    dockerImage = docker.build(registry+":$BUILD_NUMBER","./eureka-server/")
+                docker.withRegistry('http://'+registry, 'credentials-id') {
+                    def dockerImage = docker.build(registry+"/"+application+":$BUILD_NUMBER","./eureka-server/")
+			dockerImage.push()
                 }
             }
         }
